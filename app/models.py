@@ -1,7 +1,6 @@
 import base64
 import os
 from random import randint
-from app import db, login
 from datetime import datetime, timedelta
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -65,9 +64,9 @@ class User(Document):
         db.session.commit()
 
 
-@login.user_loader
-def get_a_user_by_id(user_id):
-    return db.session.get(User, user_id)
+# @login.user_loader
+# def get_a_user_by_id(user_id):
+#     return db.session.get(User, user_id)
 
 
 def random_photo_url():

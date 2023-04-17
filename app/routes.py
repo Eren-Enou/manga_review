@@ -1,4 +1,5 @@
-from app import app, db
+from . import db, collection, app
+
 from flask import Flask, render_template, jsonify, request, Markup, redirect, url_for, flash
 from app.forms import SignUpForm, LoginForm, SearchForm
 from app.models import User
@@ -19,15 +20,12 @@ def inject_now():
 def index():
     return render_template('index.html')
 
-@app.route("/home")
-def home():
-    return render_template('home.html')
-
-@app.route('/login', methods=['POST'])
+@app.route('/signup', methods=['POST'])
 def login():
     form = SignUpForm()
     if form.validate_on_submit():
         print('Form Validated')
+        flash('Form validated!')
         first_name = form.first_name.data
         last_name = form.last_name.data
         email = form.email.data
@@ -36,7 +34,10 @@ def login():
         print(first_name, last_name, email, username, password)
         # Check to see if there is already a user with either username or email    
         new_user = User(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
-        flash(f"Thank you {new_user.username} for signing up!", "success")
+        result = collection.insert_one(new_user)
+        document = collection.find_one({"first name":first_name})
+        flash(f"Thank you {document[first_name]} for signing up!", "success")
+        print('Inserted document ID:', result.inserted_id)
         return redirect(url_for('index'))
     return render_template('signup.html', form=form)
 

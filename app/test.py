@@ -1,6 +1,4 @@
-from app import app, db
 from flask import Flask, render_template, jsonify, request, Markup, redirect, url_for, flash
-from app.forms import SignUpForm, LoginForm, SearchForm
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi    
 from datetime import datetime
@@ -15,6 +13,7 @@ uri = "mongodb+srv://aarongblue:sLFIdkZsnq7I5HUZ@manga0.dsvoytg.mongodb.net/?ret
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
 db = client['Manga0']
+collection = db['users']
 # Send a ping to confirm a successful connection
 try:
     client.admin.command('ping')
@@ -22,7 +21,11 @@ try:
 except Exception as e:
     print(e)
 
+from app import routes
+from app import models
 
+routes
+models
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -1,18 +1,19 @@
-from flask import Flask, render_template, request, Markup
-# from flask_login import LoginManager
-
+from flask import Flask, render_template, jsonify, request, Markup, redirect, url_for, flash
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi    
 from datetime import datetime
-from config import Config
+from flask_login import login_user, logout_user, login_required, current_user
 
 import requests
 
-app = Flask(__name__)
-app.config.from_object(Config)
 
+app = Flask(__name__)
+
+uri = "mongodb+srv://aarongblue:sLFIdkZsnq7I5HUZ@manga0.dsvoytg.mongodb.net/?retryWrites=true&w=majority"
 # Create a new client and connect to the server
-client = MongoClient(Config.MONGODB_URI, server_api=ServerApi('1'))
+client = MongoClient(uri, server_api=ServerApi('1'))
+db = client['Manga0']
+collection = db['users']
 # Send a ping to confirm a successful connection
 try:
     client.admin.command('ping')
@@ -20,19 +21,8 @@ try:
 except Exception as e:
     print(e)
 
-#Create an instance of the LoginManager to set up Authentication
-# login = LoginManager()
-# login.init_app(app)
-# Tell the login manager where to redirect if a user is not logged in
-# login.login_view = 'login'
-# login.login_message = "Hey you can't do that!"
-# login.login_message_category = 'danger'
-
-# from app import routes, models
-
-# @login.user_loader
-# def load_user(user_id):
-#     return User.get(user_id)
+from app import routes
+from app import models
 
 
 if __name__ == "__main__":
