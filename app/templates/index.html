@@ -4,6 +4,11 @@
 
 {% block header %}
     <h1>Welcome to the Manga App</h1>
+    {% if current_user.is_authenticated %}
+        <h5>Nice to see you again, {{ current_user.username }}!</h5>
+    {% else %}
+        <h5>Please Sign Up or Log In to Create New Reviews</h5>
+    {% endif %}
 {% endblock %}
 
 {% block content %}

@@ -2,13 +2,14 @@ from flask import Flask, render_template, jsonify, request, Markup, redirect, ur
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi    
 from datetime import datetime
-from flask_login import login_user, logout_user, login_required, current_user
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 import requests
-
-
+import os
+# Create the Flask App and Secret Key
 app = Flask(__name__)
-
+app.config['SECRET_KEY'] = os.urandom(24)
+#uri value, hide?
 uri = "mongodb+srv://aarongblue:sLFIdkZsnq7I5HUZ@manga0.dsvoytg.mongodb.net/?retryWrites=true&w=majority"
 # Create a new client and connect to the server
 client = MongoClient(uri, server_api=ServerApi('1'))
